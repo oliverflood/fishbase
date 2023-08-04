@@ -86,10 +86,23 @@ app.get('/catches', function(req, res)
     res.render('catches');
 });
 
+
+// app.js
+
 app.get('/fishes', function(req, res)
-{
-    res.render('fishes');
+{  
+    let query1 = "SELECT * FROM Fishes;";
+
+    db.pool.query(query1, function(error, rows, fields){
+
+        res.render('fishes', {data: rows});
+    })
 });
+
+// app.get('/fishes', function(req, res)
+// {
+//     res.render('fishes');
+// });
 
 
 /*

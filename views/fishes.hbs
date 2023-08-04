@@ -6,23 +6,26 @@
   <tr>
     <th><a href="#" onClick="newThing()">New</a></th>
     <th></th>
-    <th>fish_id</th>
-    <th>rarity_id</th>
-    <th>name</th>
-    <th>color</th>
-    <th>description</th>
-    <th>favorite_movie</th>
+    {{#each data.[0]}}
+    <th>
+      {{@key}}
+    </th>
+    {{/each}}
   </tr>
-  <tr>
-    <td><a href="#" onClick="updateThing('this.fish_id')">Edit</a></td>
-    <td><a href="#" onclick="deleteThing('this.fish_id')">Delete</a></td>
-    <td align="right" >1</td>
-    <td align="right" >2</td>
-    <td >Salmon</td>
-    <td align="right" >Pink</td>
-    <td>A medium-sized fish</td>
-    <td>Finding Nemo</td>
-  </tr>
+  <tbody>
+    {{#each data}}
+    <tr>
+      <td><a href="#" onClick="updateThing('this.fish_id')">Edit</a></td>
+      <td><a href="#" onclick="deleteThing('this.fish_id')">Delete</a></td>
+      <td align="right" >{{this.fish_id}}</td>
+      <td align="right" >{{this.rarity_id}}</td>
+      <td >{{this.name}}</td>
+      <td align="right" >{{this.color}}</td>
+      <td>{{this.description}}</td>
+      <td>{{this.favorite_movie}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
 </table>
 <p>&nbsp;</p>
 </div> <!-- browse -->
