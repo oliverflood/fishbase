@@ -1,14 +1,75 @@
 <!-- main.hbs-->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <title>Example App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Players</title>
+  <link rel="stylesheet" href="style.css">
+  <script language="JavaScript">
+    function showform(dowhat) {
+      /*
+      * four DIVS: browse, insert, update, delete
+      * this function sets one visible the others not
+      */
+      if (dowhat == 'insert'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'none';
+      }
+      else if (dowhat == 'update'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'block';
+        document.getElementById('delete').style.display = 'none';
+      }
+      else if (dowhat == 'delete'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'block';
+      }
+      else if (dowhat == 'all'){
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'block';
+        document.getElementById('delete').style.display = 'block';
+      }
+      else { //by default display browse
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'none';
+      }
+    }
+    function newThing() { showform('insert'); }
+    function updateThing(pid) { showform('update'); }
+    function deleteThing(pid) { showform ('delete'); }
+    function browseThing() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+    </script>
 </head>
-<body>
 
-    {{{body}}}
+<body onload="browseThing()">
 
-</body>
+  <!-- Navigation system -->
+  <h1>Fishbase Database Management System</h1>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/fishes">Fishes</a></li>
+      <li><a href="/catches">Catches</a></li>
+      <li><a href="/players">Players</a></li>
+      <li><a href="/rods">Rods</a></li>
+      <li><a href="/player_rods">PlayerRods</a></li>
+      <li><a href="/rarities">Rarities</a></li>
+    </ul>
+  </nav>
+
+  {{{body}}}
+
+  </body>
 </html>

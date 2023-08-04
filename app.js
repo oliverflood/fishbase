@@ -52,9 +52,44 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 //     });
 
 app.get('/', function(req, res)
-    {
-        res.render('index');                    // Note the call to render() and not send(). Using render() ensures the templating engine
-    });                                         // will process this file, before sending the finished HTML to the client.
+{
+    res.render('index');
+});
+
+app.get('/index', function(req, res)
+{
+    res.render('index');
+});
+
+app.get('/players', function(req, res)
+{
+    res.render('players');
+});
+
+app.get('/rods', function(req, res)
+{
+    res.render('rods');
+});
+
+app.get('/rarities', function(req, res)
+{
+    res.render('rarities');
+});
+
+app.get('/player_rods', function(req, res)
+{
+    res.render('player_rods');
+});
+
+app.get('/catches', function(req, res)
+{
+    res.render('catches');
+});
+
+app.get('/fishes', function(req, res)
+{
+    res.render('fishes');
+});
 
 
 /*

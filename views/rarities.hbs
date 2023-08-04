@@ -1,0 +1,65 @@
+<h1>Rarities</h1>
+
+  <div id="browse">
+    <!-- <p><a href="#" onClick="showAll()">Display all forms</a> </p> -->
+    <table border="1" cellpadding="5">
+      <tr>
+        <th><a href="#" onClick="newThing()">New</a></th>
+        <th></th>
+        <th>rarity_id</th>
+        <th>rarity_name</th>
+        <th>description</th>
+      </tr>
+      <!-- Initial data for Rarities -->
+      <tr>
+        <td><a href="#" onClick="updateThing('this.rarity_id')">Edit</a></td>
+        <td><a href="#" onclick="deleteThing('this.rarity_id')">Delete</a></td>
+        <td align="right">1</td>
+        <td>Common</td>
+        <td>Common rarity fish</td>
+      </tr>
+    </table>
+    <p>&nbsp;</p>
+  </div> <!-- browse -->
+
+  <div id="insert">
+    <form method="POST" id="addThing">
+      <legend><strong>Add Rarity</strong></legend>
+      <fieldset class="fields">
+        <label> rarity_name </label> <input type="text" name="rarity_name">
+        <label> description </label> <input type="text" name="description">
+      </fieldset>
+      <input class="btn" type="submit" id="addThing" value="Add Rarity">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- insert -->
+  <p>&nbsp;</p>
+
+  <div id="update">
+    <form method="POST" id="UpdateThing">
+      <legend><strong>Update Rarity</strong></legend>
+      <fieldset class="fields">
+        <input type="hidden" name="rarity_id" id="update_rarity_id" value="1">
+        <label> rarity_id: </label> 1
+        <label> rarity_name </label> <input type="text" name="rarity_name" value="Common">
+        <label> description </label> <input type="text" name="description" value="Common rarity fish">
+      </fieldset>
+      <input class="btn" type="submit" id="UpdateThing" value="Save Update Rarity">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- update -->
+  <p>&nbsp;</p>
+
+  <div id="delete" style="display: block">
+    <form method="POST" id="deleteThing">
+      <legend><strong>Delete Rarity</strong></legend>
+      <fieldset class="fields">
+        <p>Are you sure you wish to delete the following?</p>
+        <input type="hidden" name="rarity_id" id="delete_rarity_id" value="1">
+        <label><strong>rarity_id: </strong></label> 1
+        <label><strong>rarity_name: </strong></label> Common
+      </fieldset>
+      <input class="btn" type="submit" id="DeleteThing" value="Delete Rarity">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- delete -->

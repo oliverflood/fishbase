@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rods</title>
+  <link rel="stylesheet" href="style.css">
+  <script language="JavaScript">
+    function showform(dowhat) {
+      /*
+      * four DIVS: browse, insert, update, delete
+      * this function sets one visible the others not
+      */
+      if (dowhat == 'insert'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'none';
+      }
+      else if (dowhat == 'update'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'block';
+        document.getElementById('delete').style.display = 'none';
+      }
+      else if (dowhat == 'delete'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'block';
+      }
+      else if (dowhat == 'all'){
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'block';
+        document.getElementById('delete').style.display = 'block';
+      }
+      else { //by default display browse
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'none';
+      }
+    }
+    function newThing() { showform('insert'); }
+    function updateThing(pid) { showform('update'); }
+    function deleteThing(pid) { showform ('delete'); }
+    function browseThing() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+    </script>
+</head>
+
+<body onload="browseThing()">
+
+  <!-- Navigation system -->
+  <h1>Fishbase Database Management System</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fishes.html">Fishes</a></li>
+      <li><a href="catches.html">Catches</a></li>
+      <li><a href="players.html">Players</a></li>
+      <li><a href="rods.html">Rods</a></li>
+      <li><a href="player_rods.html">PlayerRods</a></li>
+      <li><a href="rarities.html">Rarities</a></li>
+    </ul>
+  </nav>
+
+  <h1>Rods</h1>
+
+  <div id="browse">
+    <!-- Data for the initial rod -->
+    <table border="1" cellpadding="5">
+      <tr>
+        <th><a href="#" onClick="newThing()">New</a></th>
+        <th></th>
+        <th>rod_id</th>
+        <th>name</th>
+        <th>tooltip</th>
+        <th>price</th>
+        <th>catch_rate</th>
+        <th>line_length</th>
+        <th>reel_speed</th>
+        <th>money_multiplier</th>
+      </tr>
+      <tr>
+        <td><a href="#" onClick="updateThing('this.rod_id')">Edit</a></td>
+        <td><a href="#" onclick="deleteThing('this.rod_id')">Delete</a></td>
+        <td align="right">1</td>
+        <td>Basic Rod</td>
+        <td>A beginner rod</td>
+        <td align="right">$10.99</td>
+        <td align="right">0.5</td>
+        <td align="right">10</td>
+        <td align="right">1</td>
+        <td align="right">1</td>
+      </tr>
+    </table>
+    <p>&nbsp;</p>
+  </div><!-- browse -->
+
+  <div id="insert">
+    <form method="POST" id="addThing">
+      <legend><strong>Add Rod</strong></legend>
+      <fieldset class="fields">
+        <label> name </label> <input type="text" name="name">
+        <label> tooltip </label> <input type="text" name="tooltip">
+        <label> price </label> <input type="text" name="price">
+        <label> catch_rate </label> <input type="text" name="catch_rate">
+        <label> line_length </label> <input type="text" name="line_length">
+        <label> reel_speed </label> <input type="text" name="reel_speed">
+        <label> money_multiplier </label> <input type="text" name="money_multiplier">
+      </fieldset>
+      <input class="btn" type="submit" id="addThing" value="Add Rod">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- insert -->
+  <p>&nbsp;</p>
+
+  <div id="update">
+    <form method="POST" id="UpdateThing">
+      <legend><strong>Update Rod</strong></legend>
+      <fieldset class="fields">
+        <input type="hidden" name="rod_id" id="update_rod_id" value="1">
+        <label> rod_id: </label> 1
+        <label> name </label> <input type="text" name="name" value="Basic Rod">
+        <label> tooltip </label> <input type="text" name="tooltip" value="A beginner rod">
+        <label> price </label> <input type="text" name="price" value="$10.99">
+        <label> catch_rate </label> <input type="text" name="catch_rate" value="0.5">
+        <label> line_length </label> <input type="text" name="line_length" value="10">
+        <label> reel_speed </label> <input type="text" name="reel_speed" value="1">
+        <label> money_multiplier </label> <input type="text" name="money_multiplier" value="1">
+      </fieldset>
+      <input class="btn" type="submit" id="UpdateThing" value="Save Update Rod">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- update -->
+  <p>&nbsp;</p>
+
+  <div id="delete" style="display: block">
+    <form method="POST" id="deleteThing">
+      <legend><strong>Delete Rod</strong></legend>
+      <fieldset class="fields">
+        <p>Are you sure you wish to delete the following?</p>
+        <input type="hidden" name="rod_id" id="delete_rod_id" value="1">
+        <label><strong>rod_id: </strong></label> 1
+        <label> <strong>Name:</strong> </label> Basic Rod
+        <label> <strong>Tooltip:</strong> </label> A beginner rod
+        <label> <strong>Price:</strong> </label> $10.99
+        <label> <strong>Catch Rate:</strong> </label> 0.5
+        <label> <strong>Line Length:</strong> </label> 10
+        <label> <strong>Reel Speed:</strong> </label> 1
+        <label> <strong>Money Multiplier:</strong> </label> 1
+      </fieldset>
+      <input class="btn" type="submit" id="DeleteThing" value="Delete Rod">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- delete -->
+
+</body>
+
+</html>

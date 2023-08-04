@@ -1,0 +1,75 @@
+<h1>Catches</h1>
+
+  <div id="browse">
+    <!-- Data for the initial catch -->
+    <table border="1" cellpadding="5">
+      <tr>
+        <th><a href="#" onClick="newThing()">New</a></th>
+        <th></th>
+        <th>catch_id</th>
+        <th>player_id</th>
+        <th>fish_id</th>
+        <th>money_earned</th>
+        <th>catch_date</th>
+      </tr>
+      <tr>
+        <td><a href="#" onClick="updateThing('this.catch_id')">Edit</a></td>
+        <td><a href="#" onclick="deleteThing('this.catch_id')">Delete</a></td>
+        <td align="right">1</td>
+        <td align="right">1</td>
+        <td align="right">1</td>
+        <td align="right">$5.99</td>
+        <td>2/3/2022</td>
+      </tr>
+    </table>
+    <p>&nbsp;</p>
+  </div><!-- browse -->
+
+  <div id="insert">
+    <form method="POST" id="addThing">
+      <legend><strong>Add Catch</strong></legend>
+      <fieldset class="fields">
+        <label> player_id </label> <input type="text" name="player_id">
+        <label> fish_id </label> <input type="text" name="fish_id">
+        <label> money_earned </label> <input type="text" name="money_earned">
+        <label> catch_date </label> <input type="text" name="catch_date">
+      </fieldset>
+      <input class="btn" type="submit" id="addThing" value="Add Catch">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- insert -->
+  <p>&nbsp;</p>
+
+  <div id="update">
+    <form method="POST" id="UpdateThing">
+      <legend><strong>Update Catch</strong></legend>
+      <fieldset class="fields">
+        <input type="hidden" name="catch_id" id="update_catch_id" value="1">
+        <label> catch_id: </label> 1
+        <label> player_id </label> <input type="text" name="player_id" value="1">
+        <label> fish_id </label> <input type="text" name="fish_id" value="1">
+        <label> money_earned </label> <input type="text" name="money_earned" value="$5.99">
+        <label> catch_date </label> <input type="text" name="catch_date" value="2/3/2022">
+      </fieldset>
+      <input class="btn" type="submit" id="UpdateThing" value="Save Update Catch">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- update -->
+  <p>&nbsp;</p>
+
+  <div id="delete" style="display: block">
+    <form method="POST" id="deleteThing">
+      <legend><strong>Delete Catch</strong></legend>
+      <fieldset class="fields">
+        <p>Are you sure you wish to delete the following?</p>
+        <input type="hidden" name="catch_id" id="delete_catch_id" value="1">
+        <label><strong>catch_id: </strong></label> 1
+        <label> <strong>Player ID:</strong> </label> 1
+        <label> <strong>Fish ID:</strong> </label> 1
+        <label> <strong>Money Earned:</strong> </label> $5.99
+        <label> <strong>Catch Date:</strong> </label> 2/3/2022
+      </fieldset>
+      <input class="btn" type="submit" id="DeleteThing" value="Delete Catch">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- delete -->
