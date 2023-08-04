@@ -1,0 +1,129 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: #f2f2f2;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+nav li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+nav li:last-child {
+  margin-right: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #313030;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #aac4da;
+}
+
+nav a.home-btn {
+  background-color: #879fac;
+  color: #fff;
+}
+
+p {
+  margin: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 80%;
+  margin: 0 auto;
+  border: 1px solid #000000;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border: 1px solid #000000;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+/* Form styles */
+
+form {
+  width: 70%;
+  margin: 0 auto;
+}
+
+legend {
+  font-weight: bold;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.btn {
+  background-color: #aac4da;
+  color: #313030;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #879fac;
+}
+
+/* Show the update and delete forms in horizontal rows */
+/*#update,
+#delete {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+#update select,
+#delete select {
+  width: 100%;
+}
+
+#update input[type="text"],
+#delete input[type="text"] {
+  width: 100%;
+}
+*/

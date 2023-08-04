@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Players</title>
+  <link rel="stylesheet" href="style.css">
+  <script language="JavaScript">
+    function showform(dowhat) {
+      /*
+      * four DIVS: browse, insert, update, delete
+      * this function sets one visible the others not
+      */
+      if (dowhat == 'insert'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'none';
+      }
+      else if (dowhat == 'update'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'block';
+        document.getElementById('delete').style.display = 'none';
+      }
+      else if (dowhat == 'delete'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'block';
+      }
+      else if (dowhat == 'all'){
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'block';
+        document.getElementById('delete').style.display = 'block';
+      }
+      else { //by default display browse
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'none';
+      }
+    }
+    function newThing() { showform('insert'); }
+    function updateThing(pid) { showform('update'); }
+    function deleteThing(pid) { showform ('delete'); }
+    function browseThing() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+    </script>
+</head>
+
+<body onload="browseThing()">
+
+  <!-- Navigation system -->
+  <h1>Fishbase Database Management System</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fishes.html">Fishes</a></li>
+      <li><a href="catches.html">Catches</a></li>
+      <li><a href="players.html">Players</a></li>
+      <li><a href="rods.html">Rods</a></li>
+      <li><a href="player_rods.html">PlayerRods</a></li>
+      <li><a href="rarities.html">Rarities</a></li>
+    </ul>
+  </nav>
+
+  <h1>Players</h1>
+
+  <div id="browse">
+    <!-- Data for the initial player -->
+    <table border="1" cellpadding="5">
+      <tr>
+        <th><a href="#" onClick="newThing()">New</a></th>
+        <th></th>
+        <th>player_id</th>
+        <th>username</th>
+        <th>total_catches</th>
+        <th>join_date</th>
+      </tr>
+      <tr>
+        <td><a href="#" onClick="updateThing('this.player_id')">Edit</a></td>
+        <td><a href="#" onclick="deleteThing('this.player_id')">Delete</a></td>
+        <td align="right">1</td>
+        <td>player1</td>
+        <td align="right">25</td>
+        <td>1/15/2022</td>
+      </tr>
+    </table>
+    <p>&nbsp;</p>
+  </div><!-- browse -->
+
+  <div id="insert">
+    <form method="POST" id="addThing">
+      <legend><strong>Add Player</strong></legend>
+      <fieldset class="fields">
+        <label> username </label> <input type="text" name="username">
+        <label> total_catches </label> <input type="text" name="total_catches">
+        <label> join_date </label> <input type="text" name="join_date">
+      </fieldset>
+      <input class="btn" type="submit" id="addThing" value="Add Player">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- insert -->
+  <p>&nbsp;</p>
+
+  <div id="update">
+    <form method="POST" id="UpdateThing">
+      <legend><strong>Update Player</strong></legend>
+      <fieldset class="fields">
+        <input type="hidden" name="player_id" id="update_player_id" value="1">
+        <label> player_id: </label> 1
+        <label> username </label> <input type="text" name="username" value="player1">
+        <label> total_catches </label> <input type="text" name="total_catches" value="25">
+        <label> join_date </label> <input type="text" name="join_date" value="1/15/2022">
+      </fieldset>
+      <input class="btn" type="submit" id="UpdateThing" value="Save Update Player">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- update -->
+  <p>&nbsp;</p>
+
+  <div id="delete" style="display: block">
+    <form method="POST" id="deleteThing">
+      <legend><strong>Delete Player</strong></legend>
+      <fieldset class="fields">
+        <p>Are you sure you wish to delete the following?</p>
+        <input type="hidden" name="player_id" id="delete_player_id" value="1">
+        <label><strong>player_id: </strong></label> 1
+        <label> <strong>Username:</strong> </label> player1
+        <label> <strong>Total Catches:</strong> </label> 25
+        <label> <strong>Join Date:</strong> </label> 1/15/2022
+      </fieldset>
+      <input class="btn" type="submit" id="DeleteThing" value="Delete Player">
+      <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+  </div><!-- delete -->
+
+</body>
+
+</html>
