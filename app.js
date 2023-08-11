@@ -8,6 +8,9 @@ var db = require('./database/db-connector')
 */
 var express = require('express');   // We are using the express library for the web server
 var app     = express();            // We need to instantiate an express object to interact with the server in our code
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(express.static('public'))
 PORT        = 56711;                 // Set a port number at the top so it's easy to change in the future
 
 // app.js
@@ -85,6 +88,63 @@ app.get('/catches', function(req, res)
 {
     res.render('catches');
 });
+
+
+
+// app.js - ROUTES section
+
+app.post('/add-fish-form', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Capture NULL values
+
+
+    //let rarity_id = 1;
+
+    // let age = parseInt(data.age);
+    // if (isNaN(age))
+    // {
+    //     age = 'NULL'
+    // }
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Fishes (name, color, description, favorite_movie) VALUES ('${data.name}', '${data.color}', '${data.description}', '${data.favorite_movie}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            // // If there was no error, perform a SELECT * on bsg_people
+            // query2 = `SELECT * FROM Fishes;`;
+            // db.pool.query(query2, function(error, rows, fields){
+
+            //     // If there was an error on the second query, send a 400
+            //     if (error) {
+                    
+            //         // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            //         console.log(error);
+            //         res.sendStatus(400);
+            //     }
+            //     // If all went well, send the results of the query back.
+            //     else
+            //     {
+            //         res.send(rows);
+            //     }
+            // })
+            res.redirect('/');
+        }
+    })
+});
+
+
 
 
 // app.js
