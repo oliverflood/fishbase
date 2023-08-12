@@ -97,6 +97,7 @@ app.post('/add-fish-form', function(req, res)
 {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
+    console.log(data)
 
     // Capture NULL values
 
@@ -110,7 +111,7 @@ app.post('/add-fish-form', function(req, res)
     // }
 
     // Create the query and run it on the database
-    query1 = `INSERT INTO Fishes (name, color, description, favorite_movie) VALUES ('${data['input-name']}', '${data['input-color']}', '${data['input-description']}', '${data['input-favorite_movie']}')`;
+    query1 = `INSERT INTO Fishes (rarity_id ,name, color, description, favorite_movie) VALUES ('${data['input-rarity_id']}','${data['input-name']}', '${data['input-color']}', '${data['input-description']}', '${data['input-favorite_movie']}')`;
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
@@ -122,29 +123,85 @@ app.post('/add-fish-form', function(req, res)
         }
         else
         {
-            // // If there was no error, perform a SELECT * on bsg_people
-            // query2 = `SELECT * FROM Fishes;`;
-            // db.pool.query(query2, function(error, rows, fields){
-
-            //     // If there was an error on the second query, send a 400
-            //     if (error) {
-                    
-            //         // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-            //         console.log(error);
-            //         res.sendStatus(400);
-            //     }
-            //     // If all went well, send the results of the query back.
-            //     else
-            //     {
-            //         res.send(rows);
-            //     }
-            // })
             res.redirect('/fishes');
         }
     })
 });
 
+app.post('/delete-fish-form', function(req, res, next){
+    let data = req.body;
+    let personID = parseInt(data.id);
+    let query1= `DELETE FROM Fishes WHERE fish_id = ?`;
+    // let query2 = `-- DELETE FROM __ WHERE pid = ?`;
 
+    // Run the 1st query
+    db.pool.query(query1, [personID], function(error, rows, fields){
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(query1, [personID], function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // res.sendStatus(204); // TODO still gives error and doesn't reload the page. redirect doesn't work either
+                    res.redirect('/fishes');
+                    // res.send(rows);
+
+                }
+
+            })
+
+        }
+    })});
+
+app.post('/put-fish-form', function(req,res,next){
+
+    // Collect and unpack data, transfer to array
+    let data = req.body;
+    let { fish_id, rarity, name, color, description, favorite_movie } = data;
+    let values = [rarity, name, color, description, favorite_movie, fish_id]
+
+    let query = `UPDATE Fishes SET 
+        rarity_id = ?,
+        name = ?,
+        color = ?,
+        description = ?,
+        favorite_movie = ? 
+        WHERE fish_id = ?`
+
+    let select = `SELECT * FROM Fishes WHERE fish_id = ?`
+
+    // Run update query
+    db.pool.query(query, values, (error, rows, fields) => {
+        if (error) {
+            console.log(error);
+            res.status(500).send('Error updating fish');
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(select, fish_id, function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.status(400).send('Error retrieving fish');
+                } else {
+                    res.redirect('/fishes')
+                }
+            })
+        }
+    });
+});
 
 
 // app.js
@@ -156,6 +213,16 @@ app.get('/fishes', function(req, res)
     db.pool.query(query1, function(error, rows, fields){
 
         res.render('fishes', {data: rows});
+    })
+});
+
+app.get('/catches', function(req, res)
+{
+    let query1 = "SELECT * FROM Catches;";
+    console.log("asdf2222")
+    db.pool.query(query1, function(error, rows, fields){
+        console.log("asdf")
+        res.render('catches', {data: rows});
     })
 });
 

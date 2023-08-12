@@ -1,108 +1,121 @@
-  <h1>Fishes</h1>
+<h1>Fishes</h1>
 
 <div id="browse">
-<!-- <p><a href="#" onClick="showAll()">Display all forms</a> </p> -->
-<table border="1" cellpadding="5" id="Fishes-table">
-  <thead>
-    <tr>
-      <th><a href="#" onClick="newThing()">New</a></th>
-      <th></th>
-      {{#each data.[0]}}
-      <th>
-        {{@key}}
-      </th>
-      {{/each}}
-    </tr>
-  </thead>
-  <tbody>
-    {{#each data}}
-    <tr>
-      <td><a href="#" onClick="updateThing('this.fish_id')">Edit</a></td>
-      <td><a href="#" onclick="deleteThing('this.fish_id')">Delete</a></td>
-      <td align="right" >{{this.fish_id}}</td>
-      <td align="right" >{{this.rarity_id}}</td>
-      <td >{{this.name}}</td>
-      <td align="right" >{{this.color}}</td>
-      <td>{{this.description}}</td>
-      <td>{{this.favorite_movie}}</td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
-<p>&nbsp;</p>
+    <!-- <p><a href="#" onClick="showAll()">Display all forms</a> </p> -->
+    <table border="1" cellpadding="5" id="Fishes-table">
+        <thead>
+        <tr>
+            <th><a href="#" onClick="newThing()">New</a></th>
+            <th></th>
+            {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+            {{/each}}
+        </tr>
+        </thead>
+        <tbody>
+        {{#each data}}
+            <tr>
+                <td><a href="#"
+                       onClick="updateThing({{this.fish_id}},'{{this.rarity_id}}', '{{this.name}}', '{{this.color}}', '{{this.description}}', '{{this.favorite_movie}}')">Edit</a>
+                </td>
+                <td><a href="#" onclick="deleteFish({{this.fish_id}})">Delete</a></td>
+                <td align="right">{{this.fish_id}}</td>
+                <td align="right">{{this.rarity_id}}</td>
+                <td>{{this.name}}</td>
+                <td align="right">{{this.color}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.favorite_movie}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    <script src="./js/delete_fish.js"></script>
+
+    <p>&nbsp;</p>
 </div> <!-- browse -->
 
 
-
-
-
 <div id="insert">
-  <form method="POST" action="/add-fish-form" id="addThing">
+    <form method="POST" action="/add-fish-form" id="addThing">
         <legend><strong>Add Fish</strong></legend>
-          <fieldset class="fields">
-            <label for="input-rarity_id"> rarity </label> 
-              <select name="input-rarity_id" id="input-rarity_id">
+        <fieldset class="fields">
+            <label for="input-rarity_id"> rarity </label>
+            <select name="input-rarity_id" id="input-rarity_id">
                 <option value="0">&nbsp;</option>
                 <option value="1">Common</option>
                 <option value="2">Uncommon</option>
                 <option value="3">Rare</option>
-              </select>
+            </select>
             <label for="input-name"> name </label> <input type="text" name="input-name" id="input-name">
             <label for="input-color"> color </label> <input type="text" name="input-color" id="input-color">
-            <label for="input-description"> description </label> <input type="text" name="input-description" id="input-description">
-            <label for="input-favorite_movie"> favorite_movie </label> <input type="text" name="input-favorite_movie" id="input-favorite_movie">
-      </fieldset>
-      <input type="submit">
-      <input class="btn" type="submit" id="addThing" value="Add Fish">
-      <input class="btn" type="button" value="cancel" onClick="browseThing()">
-  </form> 
-<!--  <script src="./public/js/add_fish.js"></script>-->
+            <label for="input-description"> description </label> <input type="text" name="input-description"
+                                                                        id="input-description">
+            <label for="input-favorite_movie"> favorite_movie </label> <input type="text" name="input-favorite_movie"
+                                                                              id="input-favorite_movie">
+        </fieldset>
+        <input type="submit">
+        <input class="btn" type="submit" id="addThing" value="Add Fish">
+        <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
+    <!--  <script src="./js/add_fish.js"></script>-->
+
 
 </div><!-- insert -->
 <p>&nbsp;</p>
 
 
-
-
 <div id="update">
-    <form method="POST" id="UpdateThing">
+    <form method="POST" action="/put-fish-form" id="UpdateThing">
         <legend><strong>Update Thing</strong></legend>
-          <fieldset class="fields">
-          <input type="hidden" name="fish_id" id="update_fish_id" value="1">
-          <label> fish_id: </label> 1
+        <fieldset class="fields">
+            <input type="hidden" name="fish_id" id="update_fish_id" value="1">
+            <label> fish_id: </label> 1
             <label> rarity </label> <select name="rarity">
-              <option value="0">&nbsp;</option>
-              <option value="1">Common</option>
-              <option value="2" selected>Uncommon</option>
-              <option value="3">Rare</option>
-              </select>
+            <option value="0">&nbsp;</option>
+            <option value="1">Common</option>
+            <option value="2" selected>Uncommon</option>
+            <option value="3">Rare</option>
+        </select>
             <label> name </label> <input type="text" name="name" value="Salmon">
             <label> color </label> <input type="text" name="color" value="Pink">
             <label> description </label> <input type="text" name="description" value="A medium-sized fish">
             <label> favorite_movie </label> <input type="text" name="favorite_movie" value="Finding Nemo">
-      </fieldset>
-          <input class="btn" type="submit" id="UpdateThing" value="Save Update Fish">
-          <input class="btn" type="button" value="cancel" onClick="browseThing()">
-  </form> 
+        </fieldset>
+        <input class="btn" type="submit" id="UpdateThing" value="Save Update Fish">
+        <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
 </div><!-- update -->
 <p>&nbsp;</p>
 
 
-
-
-
 <div id="delete" style="display: block">
-  <form method="POST" id="deleteThing">
-      <legend><strong>Delete Fish</strong></legend>
-          <fieldset class="fields">
-          <p>Are you sure you wish to delete the following?</p>
-          <input type="hidden" name="fish_id" id="delete_fish_id" value="1">
-          <label><strong>fish_id: </strong></label> 1
+    <form method="POST" action="/delete-fish-form" id="deleteThing">
+        <legend><strong>Delete Fish</strong></legend>
+        <fieldset class="fields">
+            <p>Are you sure you wish to delete the following?</p>
+            <input type="hidden" name="fish_id" id="delete_fish_id" value="1">
+            <label><strong>fish_id: </strong></label> {{this.fish_id}}
             <label> <strong>Name</strong> </label> Salmon
-            
-    </fieldset>
-    <input class="btn" type="submit" id="DeleteThing" value="Delete Fish">
-          <input class="btn" type="button" value="cancel" onClick="browseThing()">
-  </form> 
+
+        </fieldset>
+        <input class="btn" type="submit" id="DeleteThing" value="Delete Fish">
+        <input class="btn" type="button" value="cancel" onClick="browseThing()">
+    </form>
 </div><!-- delete -->
 
+
+<script>
+    function updateThing(fish_id, rarity_id, name, color, description, favorite_movie) {
+        showform('update'); // Show the update form
+
+        // Populate the update form fields with fish data
+        $('#update_fish_id').val(fish_id);
+        $('#rarity').val(rarity_id);
+        $('input[name="name"]').val(name);
+        $('input[name="color"]').val(color);
+        $('input[name="description"]').val(description);
+        $('input[name="favorite_movie"]').val(favorite_movie);
+    }
+</script>
