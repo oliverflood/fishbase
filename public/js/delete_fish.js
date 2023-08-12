@@ -1,7 +1,7 @@
-function deleteFish(fish_id) {
+function deleteFish(id) {
     let link = '/delete-fish-form';
     let data = {
-        id: fish_id
+        id: id
     };
 
     $.ajax({
@@ -10,7 +10,7 @@ function deleteFish(fish_id) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function(result) {
-            deleteRow(fish_id);
+            deleteRow(id);
         }
     });
 }
