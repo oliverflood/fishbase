@@ -4,6 +4,7 @@
   "description": "Database Management System for Fish Related Game. Full Stack Web App. CS 340 Portfolio Project.",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -110,7 +110,7 @@ app.post('/add-fish-form', function(req, res)
     // }
 
     // Create the query and run it on the database
-    query1 = `INSERT INTO Fishes (name, color, description, favorite_movie) VALUES ('${data.name}', '${data.color}', '${data.description}', '${data.favorite_movie}')`;
+    query1 = `INSERT INTO Fishes (name, color, description, favorite_movie) VALUES ('${data['input-name']}', '${data['input-color']}', '${data['input-description']}', '${data['input-favorite_movie']}')`;
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
@@ -139,7 +139,7 @@ app.post('/add-fish-form', function(req, res)
             //         res.send(rows);
             //     }
             // })
-            res.redirect('/');
+            res.redirect('/fishes');
         }
     })
 });
