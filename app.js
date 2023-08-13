@@ -64,12 +64,6 @@ app.get('/index', function(req, res)
     res.render('index');
 });
 
-
-app.get('/rods', function(req, res)
-{
-    res.render('rods');
-});
-
 app.get('/rarities', function(req, res)
 {
     res.render('rarities');
@@ -306,8 +300,6 @@ app.post('/put-catches-form', function(req,res,next){
 });
 
 // Players
-
-// Catches
 app.post('/add-players-form', function(req, res)
 {
     // Capture the incoming data and parse it back to a JS object
@@ -416,6 +408,119 @@ app.post('/put-players-form', function(req,res,next){
     });
 });
 
+// Rods
+app.post('/add-rods-form', function(req, res)
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+    console.log(data)
+
+    // Capture NULL values
+
+
+    //let rarity_id = 1;
+
+    // let age = parseInt(data.age);
+    // if (isNaN(age))
+    // {
+    //     age = 'NULL'
+    // }
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Rods (name, tooltip, price, catch_rate, line_length, reel_speed, money_multiplier) VALUES ('${data['input-name']}','${data['input-tooltip']}','${data['input-price']}', '${data['input-catch_rate']}', '${data['input-line_length']}', '${data['input-reel_speed']}', '${data['input-money_multiplier']}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            res.redirect('/rods');
+        }
+    })
+});
+
+app.post('/delete-rods-form', function(req, res, next){
+    let data = req.body;
+    let id = parseInt(data.id);
+    let query1= `DELETE FROM Rods WHERE rod_id = ?`;
+    // let query2 = `-- DELETE FROM __ WHERE pid = ?`;
+
+    // Run the 1st query
+    db.pool.query(query1, [id], function(error, rows, fields){
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(query1, [id], function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // res.sendStatus(204); // TODO still gives error and doesn't reload the page. redirect doesn't work either
+                    res.redirect('/rods');
+                    // res.send(rows);
+
+                }
+
+            })
+
+        }
+    })});
+
+app.post('/put-rods-form', function(req,res,next){
+
+    // Collect and unpack data, transfer to array
+    let data = req.body;
+    let { rod_id, name, tooltip, price, catch_rate, line_length, reel_speed, money_multiplier } = data;
+    let values = [name, tooltip, price, catch_rate, line_length, reel_speed, money_multiplier, rod_id]
+
+    let query = `UPDATE Rods SET 
+        name = ?,
+        tooltip = ?,
+        price = ?,
+        catch_rate = ?,
+        line_length = ?,
+        reel_speed = ?,
+        money_multiplier = ?
+        WHERE rod_id = ?`
+
+    let select = `SELECT * FROM Rods WHERE rod_id = ?`
+
+    // Run update query
+    db.pool.query(query, values, (error, rows, fields) => {
+        if (error) {
+            console.log(error);
+            res.status(500).send('Error updating catches');
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(select, rod_id, function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.status(400).send('Error retrieving catches');
+                } else {
+                    res.redirect('/rods')
+                }
+            })
+        }
+    });
+});
+
 
 // app.js
 
@@ -446,6 +551,16 @@ app.get('/players', function(req, res)
     db.pool.query(query1, function(error, rows, fields){
 
         res.render('players', {data: rows});
+    })
+});
+
+app.get('/rods', function(req, res)
+{
+    let query1 = "SELECT * FROM Rods;";
+
+    db.pool.query(query1, function(error, rows, fields){
+
+        res.render('rods', {data: rows});
     })
 });
 

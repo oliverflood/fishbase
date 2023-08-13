@@ -1,47 +1,52 @@
 <h1>Rods</h1>
 
-  <div id="browse">
-    <!-- Data for the initial rod -->
-    <table border="1" cellpadding="5">
-      <tr>
-        <th><a href="#" onClick="newThing()">New</a></th>
-        <th></th>
-        <th>rod_id</th>
-        <th>name</th>
-        <th>tooltip</th>
-        <th>price</th>
-        <th>catch_rate</th>
-        <th>line_length</th>
-        <th>reel_speed</th>
-        <th>money_multiplier</th>
-      </tr>
-      <tr>
-        <td><a href="#" onClick="updateThing('this.rod_id')">Edit</a></td>
-        <td><a href="#" onclick="deleteThing('this.rod_id')">Delete</a></td>
-        <td align="right">1</td>
-        <td>Basic Rod</td>
-        <td>A beginner rod</td>
-        <td align="right">$10.99</td>
-        <td align="right">0.5</td>
-        <td align="right">10</td>
-        <td align="right">1</td>
-        <td align="right">1</td>
-      </tr>
+<div id="browse">
+    <!-- Data for the initial catch -->
+    <table border="1" cellpadding="5" id="Rods-table">
+        <thead>
+        <tr>
+            <th><a href="#" onClick="newThing()">New</a></th>
+            <th></th>
+            {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+            {{/each}}
+        </tr>
+        </thead>
+        <tbody>
+        {{#each data}}
+            <tr>
+                <td><a href="#" onClick="updateThing('{{this.rod_id}}','{{this.name}}', '{{this.tooltip}}', '{{this.price}}', '{{this.catch_rate}}', '{{this.line_length}}', '{{this.reel_speed}}', '{{this.money_multiplier}}')">Edit</a>
+                </td>
+                <td><a href="#" onclick="deleteRods({{this.rod_id}})">Delete</a></td>
+                <td align="right">{{this.rod_id}}</td>
+                <td align="right">{{this.name}}</td>
+                <td align="right">{{this.tooltip}}</td>
+                <td align="right">{{this.price}}</td>
+                <td align="right">{{this.catch_rate}}</td>
+                <td align="right">{{this.line_length}}</td>
+                <td align="right">{{this.reel_speed}}</td>
+                <td align="right">{{this.money_multiplier}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
     </table>
+    <script src="./js/delete_rods.js"></script>
     <p>&nbsp;</p>
-  </div><!-- browse -->
+</div><!-- browse -->
 
   <div id="insert">
-    <form method="POST" id="addThing">
+    <form method="POST" action="/add-rods-form" id="addThing">
       <legend><strong>Add Rod</strong></legend>
       <fieldset class="fields">
-        <label> name </label> <input type="text" name="name">
-        <label> tooltip </label> <input type="text" name="tooltip">
-        <label> price </label> <input type="text" name="price">
-        <label> catch_rate </label> <input type="text" name="catch_rate">
-        <label> line_length </label> <input type="text" name="line_length">
-        <label> reel_speed </label> <input type="text" name="reel_speed">
-        <label> money_multiplier </label> <input type="text" name="money_multiplier">
+        <label> name </label> <input type="text" name="input-name">
+        <label> tooltip </label> <input type="text" name="input-tooltip">
+        <label> price </label> <input type="text" name="input-price">
+        <label> catch_rate </label> <input type="text" name="input-catch_rate">
+        <label> line_length </label> <input type="text" name="input-line_length">
+        <label> reel_speed </label> <input type="text" name="input-reel_speed">
+        <label> money_multiplier </label> <input type="text" name="input-money_multiplier">
       </fieldset>
       <input class="btn" type="submit" id="addThing" value="Add Rod">
       <input class="btn" type="button" value="cancel" onClick="browseThing()">
@@ -50,7 +55,7 @@
   <p>&nbsp;</p>
 
   <div id="update">
-    <form method="POST" id="UpdateThing">
+    <form method="POST" action="/put-rods-form" id="UpdateThing">
       <legend><strong>Update Rod</strong></legend>
       <fieldset class="fields">
         <input type="hidden" name="rod_id" id="update_rod_id" value="1">
@@ -88,3 +93,19 @@
       <input class="btn" type="button" value="cancel" onClick="browseThing()">
     </form>
   </div><!-- delete -->
+
+<script>
+    function updateThing(rod_id, name, tooltip, price, catch_rate, line_length, reel_speed, money_multiplier) {
+        showform('update'); // Show the update form
+
+        // Populate the update form fields with fish data
+        $('#update_rod_id').val(rod_id);
+        $('input[name="name"]').val(name);
+        $('input[name="tooltip"]').val(tooltip);
+        $('input[name="price"]').val(price);
+        $('input[name="catch_rate"]').val(catch_rate);
+        $('input[name="line_length"]').val(line_length);
+        $('input[name="reel_speed"]').val(reel_speed);
+        $('input[name="money_multiplier"]').val(money_multiplier);
+    }
+</script>
