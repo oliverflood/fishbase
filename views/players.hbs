@@ -2,35 +2,45 @@
   <h1>Players</h1>
 
   <div id="browse">
-    <!-- Data for the initial player -->
-    <table border="1" cellpadding="5">
-      <tr>
-        <th><a href="#" onClick="newThing()">New</a></th>
-        <th></th>
-        <th>player_id</th>
-        <th>username</th>
-        <th>total_catches</th>
-        <th>join_date</th>
-      </tr>
-      <tr>
-        <td><a href="#" onClick="updateThing('this.player_id')">Edit</a></td>
-        <td><a href="#" onclick="deleteThing('this.player_id')">Delete</a></td>
-        <td align="right">1</td>
-        <td>player1</td>
-        <td align="right">25</td>
-        <td>1/15/2022</td>
-      </tr>
-    </table>
-    <p>&nbsp;</p>
-  </div><!-- browse -->
+      <!-- <p><a href="#" onClick="showAll()">Display all forms</a> </p> -->
+      <table border="1" cellpadding="5" id="Fishes-table">
+          <thead>
+          <tr>
+              <th><a href="#" onClick="newThing()">New</a></th>
+              <th></th>
+              {{#each data.[0]}}
+                  <th>
+                      {{@key}}
+                  </th>
+              {{/each}}
+          </tr>
+          </thead>
+          <tbody>
+          {{#each data}}
+              <tr>
+                  <td><a href="#" onClick="updateThing({{this.player_id}},'{{this.username}}', '{{this.total_catches}}', '{{this.join_date}}')">Edit</a>
+                  </td>
+                  <td><a href="#" onclick="deletePlayers({{this.player_id}})">Delete</a></td>
+                  <td align="right">{{this.player_id}}</td>
+                  <td align="right">{{this.username}}</td>
+                  <td>{{this.total_catches}}</td>
+                  <td align="right">{{this.join_date}}</td>
+              </tr>
+          {{/each}}
+          </tbody>
+      </table>
+      <script src="./js/delete_players.js"></script>
+
+      <p>&nbsp;</p>
+  </div> <!-- browse -->
 
   <div id="insert">
-    <form method="POST" id="addThing">
+    <form method="POST" action="/add-players-form" id="addThing">
       <legend><strong>Add Player</strong></legend>
       <fieldset class="fields">
-        <label> username </label> <input type="text" name="username">
-        <label> total_catches </label> <input type="text" name="total_catches">
-        <label> join_date </label> <input type="text" name="join_date">
+        <label> username </label> <input type="text" name="input-username">
+        <label> total_catches </label> <input type="text" name="input-total_catches">
+        <label> join_date </label> <input type="datetime-local" name="input-join_date">
       </fieldset>
       <input class="btn" type="submit" id="addThing" value="Add Player">
       <input class="btn" type="button" value="cancel" onClick="browseThing()">
@@ -46,7 +56,7 @@
         <label> player_id: </label> 1
         <label> username </label> <input type="text" name="username" value="player1">
         <label> total_catches </label> <input type="text" name="total_catches" value="25">
-        <label> join_date </label> <input type="text" name="join_date" value="1/15/2022">
+        <label> join_date </label> <input type="datetime-local" name="join_date" value="1/15/2022">
       </fieldset>
       <input class="btn" type="submit" id="UpdateThing" value="Save Update Player">
       <input class="btn" type="button" value="cancel" onClick="browseThing()">
@@ -55,7 +65,7 @@
   <p>&nbsp;</p>
 
   <div id="delete" style="display: block">
-    <form method="POST" id="deleteThing">
+    <form method="POST" action="/delete-players-form" id="deleteThing">
       <legend><strong>Delete Player</strong></legend>
       <fieldset class="fields">
         <p>Are you sure you wish to delete the following?</p>
@@ -69,3 +79,15 @@
       <input class="btn" type="button" value="cancel" onClick="browseThing()">
     </form>
   </div><!-- delete -->
+
+  <script>
+      function updateThing(player_id, username, total_catches, join_date) {
+          showform('update'); // Show the update form
+
+          // Populate the update form fields with fish data
+          $('#update_player_id').val(player_id); // TODO doesn't seem to update
+          $('input[name="username"]').val(username);
+          $('input[name="total_catches"]').val(total_catches);
+          $('input[name="join_date"]').val(join_date); // TODO doesn't seem to update
+      }
+  </script>

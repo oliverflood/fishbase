@@ -64,10 +64,6 @@ app.get('/index', function(req, res)
     res.render('index');
 });
 
-app.get('/players', function(req, res)
-{
-    res.render('players');
-});
 
 app.get('/rods', function(req, res)
 {
@@ -309,6 +305,117 @@ app.post('/put-catches-form', function(req,res,next){
     });
 });
 
+// Players
+
+// Catches
+app.post('/add-players-form', function(req, res)
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+    console.log(data)
+
+    // Capture NULL values
+
+
+    //let rarity_id = 1;
+
+    // let age = parseInt(data.age);
+    // if (isNaN(age))
+    // {
+    //     age = 'NULL'
+    // }
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Players (player_id ,username, total_catches, join_date) VALUES ('${data['input-player_id']}','${data['input-username']}', '${data['input-total_catches']}', '${data['input-join_date']}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            res.redirect('/players');
+        }
+    })
+});
+
+app.post('/delete-players-form', function(req, res, next){
+    let data = req.body;
+    let id = parseInt(data.id);
+    let query1= `DELETE FROM Players WHERE player_id = ?`;
+    // let query2 = `-- DELETE FROM __ WHERE pid = ?`;
+
+    // Run the 1st query
+    db.pool.query(query1, [id], function(error, rows, fields){
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(query1, [id], function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // res.sendStatus(204); // TODO still gives error and doesn't reload the page. redirect doesn't work either
+                    res.redirect('/players');
+                    // res.send(rows);
+
+                }
+
+            })
+
+        }
+    })});
+
+app.post('/put-players-form', function(req,res,next){
+
+    // Collect and unpack data, transfer to array
+    let data = req.body;
+    let { player_id, username, total_catches, join_date } = data;
+    let values = [username, total_catches, join_date, player_id]
+
+    let query = `UPDATE Players SET 
+        username = ?,
+        total_catches = ?,
+        join_date = ?
+        WHERE player_id = ?`
+
+    let select = `SELECT * FROM Players WHERE player_id = ?`
+
+    // Run update query
+    db.pool.query(query, values, (error, rows, fields) => {
+        if (error) {
+            console.log(error);
+            res.status(500).send('Error updating catches');
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(select, player_id, function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.status(400).send('Error retrieving catches');
+                } else {
+                    res.redirect('/players')
+                }
+            })
+        }
+    });
+});
+
 
 // app.js
 
@@ -329,6 +436,16 @@ app.get('/catches', function(req, res)
     db.pool.query(query1, function(error, rows, fields){
 
         res.render('catches', {data: rows});
+    })
+});
+
+app.get('/players', function(req, res)
+{
+    let query1 = "SELECT * FROM Players;";
+
+    db.pool.query(query1, function(error, rows, fields){
+
+        res.render('players', {data: rows});
     })
 });
 
