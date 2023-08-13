@@ -64,11 +64,6 @@ app.get('/index', function(req, res)
     res.render('index');
 });
 
-app.get('/rarities', function(req, res)
-{
-    res.render('rarities');
-});
-
 app.get('/player_rods', function(req, res)
 {
     res.render('player_rods');
@@ -521,6 +516,113 @@ app.post('/put-rods-form', function(req,res,next){
     });
 });
 
+// Rarities
+app.post('/add-rarities-form', function(req, res)
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+    console.log(data)
+
+    // Capture NULL values
+
+
+    //let rarity_id = 1;
+
+    // let age = parseInt(data.age);
+    // if (isNaN(age))
+    // {
+    //     age = 'NULL'
+    // }
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Rarities (rarity_name, description) VALUES ('${data['input-rarity_name']}','${data['input-description']}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            res.redirect('/rarities');
+        }
+    })
+});
+
+app.post('/delete-rarities-form', function(req, res, next){
+    let data = req.body;
+    let id = parseInt(data.id);
+    let query1= `DELETE FROM Rarities WHERE rarity_id = ?`;
+    // let query2 = `-- DELETE FROM __ WHERE pid = ?`;
+
+    // Run the 1st query
+    db.pool.query(query1, [id], function(error, rows, fields){
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(query1, [id], function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // res.sendStatus(204); // TODO still gives error and doesn't reload the page. redirect doesn't work either
+                    res.redirect('/rarities');
+                    // res.send(rows);
+
+                }
+
+            })
+
+        }
+    })});
+
+app.post('/put-rarities-form', function(req,res,next){
+
+    // Collect and unpack data, transfer to array
+    let data = req.body;
+    let { rarity_id, rarity_name, description} = data;
+    let values = [rarity_name, description, rarity_id]
+
+    let query = `UPDATE Rarities SET 
+        rarity_name = ?,
+        description = ?
+        WHERE rarity_id = ?`
+
+    let select = `SELECT * FROM Rarities WHERE rarity_id = ?`
+
+    // Run update query
+    db.pool.query(query, values, (error, rows, fields) => {
+        if (error) {
+            console.log(error);
+            res.status(500).send('Error updating catches');
+        }
+
+        else
+        {
+            // Run the second query
+            db.pool.query(select, rarity_id, function(error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.status(400).send('Error retrieving catches');
+                } else {
+                    res.redirect('/rarities')
+                }
+            })
+        }
+    });
+});
 
 // app.js
 
@@ -561,6 +663,16 @@ app.get('/rods', function(req, res)
     db.pool.query(query1, function(error, rows, fields){
 
         res.render('rods', {data: rows});
+    })
+});
+
+app.get('/rarities', function(req, res)
+{
+    let query1 = "SELECT * FROM Rarities;";
+
+    db.pool.query(query1, function(error, rows, fields){
+
+        res.render('rarities', {data: rows});
     })
 });
 

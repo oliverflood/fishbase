@@ -1,33 +1,42 @@
 <h1>Rarities</h1>
 
-  <div id="browse">
-    <!-- <p><a href="#" onClick="showAll()">Display all forms</a> </p> -->
-    <table border="1" cellpadding="5">
-      <tr>
-        <th><a href="#" onClick="newThing()">New</a></th>
-        <th></th>
-        <th>rarity_id</th>
-        <th>rarity_name</th>
-        <th>description</th>
-      </tr>
-      <!-- Initial data for Rarities -->
-      <tr>
-        <td><a href="#" onClick="updateThing('this.rarity_id')">Edit</a></td>
-        <td><a href="#" onclick="deleteThing('this.rarity_id')">Delete</a></td>
-        <td align="right">1</td>
-        <td>Common</td>
-        <td>Common rarity fish</td>
-      </tr>
+<div id="browse">
+    <!-- Data for the initial catch -->
+    <table border="1" cellpadding="5" id="Rarities-table">
+        <thead>
+        <tr>
+            <th><a href="#" onClick="newThing()">New</a></th>
+            <th></th>
+            {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+            {{/each}}
+        </tr>
+        </thead>
+        <tbody>
+        {{#each data}}
+            <tr>
+                <td><a href="#" onClick="updateThing({{this.rarity_id}}, '{{this.rarity_name}}', '{{this.description}}')">Edit</a>
+                </td>
+                <td><a href="#" onclick="deleteRarities({{this.rarity_id}})">Delete</a></td>
+                <td align="right">{{this.rarity_id}}</td>
+                <td align="right">{{this.rarity_name}}</td>
+                <td align="right">{{this.description}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
     </table>
+    <script src="./js/delete_rarities.js"></script>
     <p>&nbsp;</p>
-  </div> <!-- browse -->
+</div><!-- browse -->
 
   <div id="insert">
-    <form method="POST" id="addThing">
+    <form method="POST" action="/add-rarities-form" id="addThing">
       <legend><strong>Add Rarity</strong></legend>
       <fieldset class="fields">
-        <label> rarity_name </label> <input type="text" name="rarity_name">
-        <label> description </label> <input type="text" name="description">
+        <label> rarity_name </label> <input type="text" name="input-rarity_name">
+        <label> description </label> <input type="text" name="input-description">
       </fieldset>
       <input class="btn" type="submit" id="addThing" value="Add Rarity">
       <input class="btn" type="button" value="cancel" onClick="browseThing()">
@@ -36,7 +45,7 @@
   <p>&nbsp;</p>
 
   <div id="update">
-    <form method="POST" id="UpdateThing">
+    <form method="POST" action="/put-rarities-form" id="UpdateThing">
       <legend><strong>Update Rarity</strong></legend>
       <fieldset class="fields">
         <input type="hidden" name="rarity_id" id="update_rarity_id" value="1">
@@ -51,7 +60,7 @@
   <p>&nbsp;</p>
 
   <div id="delete" style="display: block">
-    <form method="POST" id="deleteThing">
+    <form method="POST" action="/delete-rarities-form" id="deleteThing">
       <legend><strong>Delete Rarity</strong></legend>
       <fieldset class="fields">
         <p>Are you sure you wish to delete the following?</p>
@@ -63,3 +72,14 @@
       <input class="btn" type="button" value="cancel" onClick="browseThing()">
     </form>
   </div><!-- delete -->
+
+<script>
+    function updateThing(rarity_id, rarity_name, description) {
+        showform('update'); // Show the update form
+
+        // Populate the update form fields with fish data
+        $('#update_rarities_id').val(rarity_id);
+        $('input[name="rarity_name"]').val(rarity_name);
+        $('input[name="description"]').val(description);
+    }
+</script>
