@@ -38,10 +38,26 @@
     <form method="POST" action="/add-catches-form" id="addThing">
         <legend><strong>Add Catch</strong></legend>
         <fieldset class="fields">
-            <label> player_id </label> <input type="text" name="input-player_id">
-            <label> fish_id </label> <input type="text" name="input-fish_id">
-            <label> money_earned </label> <input type="text" name="input-money_earned">
-            <label> catch_date </label> <input type="datetime-local" name="input-catch_date">
+            <label>Player:</label>
+            <select name="input-player_id" id="input-player-id" required>
+                <option value="">Select a Player</option>
+                {{#each players}}
+                    <option value="{{this.player_id}}">{{this.username}}</option>
+                {{/each}}
+            </select>
+
+            <label>Fish:</label>
+            <select name="input-fish_id" id="input-fish-id" required>
+                <option value="">Select a Fish</option>
+                {{#each fishes}}
+                    <option value="{{this.fish_id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+
+            <label>Money Earned:</label>
+            <input type="text" name="input-money_earned" required>
+            <label>Catch Date:</label>
+            <input type="datetime-local" name="input-catch_date" required>
         </fieldset>
         <input class="btn" type="submit" id="addThing" value="Add Catch">
         <input class="btn" type="button" value="cancel" onClick="browseThing()">
@@ -49,14 +65,28 @@
 </div><!-- insert -->
 <p>&nbsp;</p>
 
+
 <div id="update">
     <form method="POST" action="/put-catches-form" id="UpdateThing">
         <legend><strong>Update Catch</strong></legend>
         <fieldset class="fields">
             <input type="hidden" name="catch_id" id="update_catch_id" value="1">
             <label> catch_id: </label> 1
-            <label> player_id </label> <input type="text" name="player_id" value="1">
-            <label> fish_id </label> <input type="text" name="fish_id" value="1">
+            <label>Player:</label>
+            <select name="input-player_id" id="input-player-id" required>
+                <option value="">Select a Player</option>
+                {{#each players}}
+                    <option value="{{this.player_id}}">{{this.username}}</option>
+                {{/each}}
+            </select>
+
+            <label>Fish:</label>
+            <select name="input-fish_id" id="input-fish-id" required>
+                <option value="">Select a Fish</option>
+                {{#each fishes}}
+                    <option value="{{this.fish_id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
             <label> money_earned </label> <input type="text" name="money_earned" value="$5.99">
             <label> catch_date </label> <input type="datetime-local" name="catch_date" value="2/3/2022">
         </fieldset>

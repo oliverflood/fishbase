@@ -6,6 +6,7 @@ var db = require('./database/db-connector')
 /*
     SETUP
 */
+const Handlebars = require('handlebars');
 var express = require('express');   // We are using the express library for the web server
 var app     = express();            // We need to instantiate an express object to interact with the server in our code
 app.use(express.json())
@@ -20,39 +21,6 @@ var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
-/*
-    ROUTES
-*/
-
-// app.get('/', function(req, res)
-//     {
-//         // Define our queries
-//         query1 = 'DROP TABLE IF EXISTS diagnostic;';
-//         query2 = 'CREATE TABLE diagnostic(id INT PRIMARY KEY AUTO_INCREMENT, text VARCHAR(255) NOT NULL);';
-//         query3 = 'INSERT INTO diagnostic (text) VALUES ("MySQL is working!")';
-//         query4 = 'SELECT * FROM diagnostic;';
-
-//         // Execute every query in an asynchronous manner, we want each query to finish before the next one starts
-
-//         // DROP TABLE...
-//         db.pool.query(query1, function (err, results, fields){
-
-//             // CREATE TABLE...
-//             db.pool.query(query2, function(err, results, fields){
-
-//                 // INSERT INTO...
-//                 db.pool.query(query3, function(err, results, fields){
-
-//                     // SELECT *...
-//                     db.pool.query(query4, function(err, results, fields){
-
-//                         // Send the results to the browser
-//                         res.send(JSON.stringify(results));
-//                     });
-//                 });
-//             });
-//         });
-//     });
 
 app.get('/', function(req, res)
 {
@@ -64,10 +32,7 @@ app.get('/index', function(req, res)
     res.render('index');
 });
 
-app.get('/player_rods', function(req, res)
-{
-    res.render('player_rods');
-});
+
 
 
 
@@ -78,17 +43,6 @@ app.post('/add-fish-form', function(req, res)
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
     console.log(data)
-
-    // Capture NULL values
-
-
-    //let rarity_id = 1;
-
-    // let age = parseInt(data.age);
-    // if (isNaN(age))
-    // {
-    //     age = 'NULL'
-    // }
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Fishes (rarity_id ,name, color, description, favorite_movie) VALUES ('${data['input-rarity_id']}','${data['input-name']}', '${data['input-color']}', '${data['input-description']}', '${data['input-favorite_movie']}')`;
@@ -112,7 +66,6 @@ app.post('/delete-fish-form', function(req, res, next){
     let data = req.body;
     let personID = parseInt(data.id);
     let query1= `DELETE FROM Fishes WHERE fish_id = ?`;
-    // let query2 = `-- DELETE FROM __ WHERE pid = ?`;
 
     // Run the 1st query
     db.pool.query(query1, [personID], function(error, rows, fields){
@@ -190,17 +143,6 @@ app.post('/add-catches-form', function(req, res)
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
     console.log(data)
-
-    // Capture NULL values
-
-
-    //let rarity_id = 1;
-
-    // let age = parseInt(data.age);
-    // if (isNaN(age))
-    // {
-    //     age = 'NULL'
-    // }
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Catches (player_id ,fish_id, money_earned, catch_date) VALUES ('${data['input-player_id']}','${data['input-fish_id']}', '${data['input-money_earned']}', '${data['input-catch_date']}')`;
@@ -301,17 +243,6 @@ app.post('/add-players-form', function(req, res)
     let data = req.body;
     console.log(data)
 
-    // Capture NULL values
-
-
-    //let rarity_id = 1;
-
-    // let age = parseInt(data.age);
-    // if (isNaN(age))
-    // {
-    //     age = 'NULL'
-    // }
-
     // Create the query and run it on the database
     query1 = `INSERT INTO Players (player_id ,username, total_catches, join_date) VALUES ('${data['input-player_id']}','${data['input-username']}', '${data['input-total_catches']}', '${data['input-join_date']}')`;
     db.pool.query(query1, function(error, rows, fields){
@@ -410,17 +341,6 @@ app.post('/add-rods-form', function(req, res)
     let data = req.body;
     console.log(data)
 
-    // Capture NULL values
-
-
-    //let rarity_id = 1;
-
-    // let age = parseInt(data.age);
-    // if (isNaN(age))
-    // {
-    //     age = 'NULL'
-    // }
-
     // Create the query and run it on the database
     query1 = `INSERT INTO Rods (name, tooltip, price, catch_rate, line_length, reel_speed, money_multiplier) VALUES ('${data['input-name']}','${data['input-tooltip']}','${data['input-price']}', '${data['input-catch_rate']}', '${data['input-line_length']}', '${data['input-reel_speed']}', '${data['input-money_multiplier']}')`;
     db.pool.query(query1, function(error, rows, fields){
@@ -472,7 +392,8 @@ app.post('/delete-rods-form', function(req, res, next){
             })
 
         }
-    })});
+    })
+});
 
 app.post('/put-rods-form', function(req,res,next){
 
@@ -522,17 +443,6 @@ app.post('/add-rarities-form', function(req, res)
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
     console.log(data)
-
-    // Capture NULL values
-
-
-    //let rarity_id = 1;
-
-    // let age = parseInt(data.age);
-    // if (isNaN(age))
-    // {
-    //     age = 'NULL'
-    // }
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Rarities (rarity_name, description) VALUES ('${data['input-rarity_name']}','${data['input-description']}')`;
@@ -624,27 +534,103 @@ app.post('/put-rarities-form', function(req,res,next){
     });
 });
 
-// app.js
 
-app.get('/fishes', function(req, res)
-{  
+app.post('/add-player-rods-form', function(req, res) {
+    let data = req.body;
+    //console.log('Received data:', data);
+    //let query = `INSERT INTO PlayerRods (player_id, rod_id) VALUES (?, ?);`;
+
+    let query = `INSERT INTO PlayerRods (player_id, rod_id) VALUES ('${data['input-player_id']}','${data['input-rod_id']}')`;
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/player_rods');
+        }
+    });
+});
+
+app.post('/delete-player-rods-form', function(req, res) {
+    let data = req.body;
+    let player_id = parseInt(data.player_id);
+    let rod_id = parseInt(data.rod_id);
+    let query = `DELETE FROM PlayerRods WHERE player_id = ? AND rod_id = ?;`;
+
+    db.pool.query(query, [player_id, rod_id], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/player_rods');
+        }
+    });
+});
+
+
+app.post('/put-player-rods-form', function(req, res) {
+    let data = req.body;
+    let { player_id, rod_id, update_player_id, update_rod_id } = data;
+    let query = `UPDATE PlayerRods SET player_id = ?, rod_id = ? WHERE player_id = ? AND rod_id = ?;`;
+
+    db.pool.query(query, [update_player_id, update_rod_id, player_id, rod_id], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            res.redirect('/player_rods');
+        }
+    });
+});
+
+
+
+app.get('/fishes', function(req, res) {
     let query1 = "SELECT * FROM Fishes;";
+    let query2 = "SELECT * FROM Rarities;";
 
-    db.pool.query(query1, function(error, rows, fields){
-
-        res.render('fishes', {data: rows});
-    })
+    db.pool.query(query1, function(error, fishes, fields) {
+        db.pool.query(query2, function(error, rarities, fields) {
+            res.render('fishes', { data: fishes, rarities: rarities });
+        });
+    });
 });
 
-app.get('/catches', function(req, res)
-{
-    let query1 = "SELECT * FROM Catches;";
 
-    db.pool.query(query1, function(error, rows, fields){
+app.get('/catches', function(req, res) {
+    let queryPlayers = "SELECT * FROM Players;";
+    let queryFishes = "SELECT * FROM Fishes;";
+    let queryCatches = "SELECT * FROM Catches;";
 
-        res.render('catches', {data: rows});
-    })
+    db.pool.query(queryPlayers, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+        let players = rows;
+
+        db.pool.query(queryFishes, function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(500);
+                return;
+            }
+            let fishes = rows;
+
+            db.pool.query(queryCatches, function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(500);
+                    return;
+                }
+
+                res.render('catches', { players: players, fishes: fishes, data: rows });
+            });
+        });
+    });
 });
+
 
 app.get('/players', function(req, res)
 {
@@ -676,10 +662,51 @@ app.get('/rarities', function(req, res)
     })
 });
 
-// app.get('/fishes', function(req, res)
-// {
-//     res.render('fishes');
-// });
+app.get('/player_rods', function(req, res) {
+    let queryPlayers = "SELECT * FROM Players;";
+    let queryRods = "SELECT * FROM Rods;";
+    let queryPlayerRods = "SELECT * FROM PlayerRods;";
+
+    db.pool.query(queryPlayers, function(error, players, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+
+        db.pool.query(queryRods, function(error, rods, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(500);
+                return;
+            }
+
+            db.pool.query(queryPlayerRods, function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(500);
+                    return;
+                }
+
+                res.render('player_rods', { players: players, rods: rods, data: rows });
+            });
+        });
+    });
+});
+
+
+// Needed for player_rods
+Handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
+    switch (operator) {
+        case '===':
+            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '!==':
+            return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
+    }
+});
+
 
 
 /*

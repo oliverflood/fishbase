@@ -42,12 +42,13 @@
         <legend><strong>Add Fish</strong></legend>
         <fieldset class="fields">
             <label for="input-rarity_id"> rarity </label>
-            <select name="input-rarity_id" id="input-rarity_id">
-                <option value="0">&nbsp;</option>
-                <option value="1">Common</option>
-                <option value="2">Uncommon</option>
-                <option value="3">Rare</option>
+            <select name="input-rarity_id" id="input-rarity_id" required>
+                <option value="">Select a Rarity</option>
+                {{#each rarities}}
+                    <option value="{{this.rarity_id}}">{{this.rarity_name}}</option>
+                {{/each}}
             </select>
+
             <label for="input-name"> name </label> <input type="text" name="input-name" id="input-name">
             <label for="input-color"> color </label> <input type="text" name="input-color" id="input-color">
             <label for="input-description"> description </label> <input type="text" name="input-description"
@@ -72,12 +73,13 @@
         <fieldset class="fields">
             <input type="hidden" name="fish_id" id="update_fish_id" value="1">
             <label> fish_id: </label> 1
-            <label> rarity </label> <select name="rarity">
-            <option value="0">&nbsp;</option>
-            <option value="1">Common</option>
-            <option value="2" selected>Uncommon</option>
-            <option value="3">Rare</option>
-        </select>
+            <label for="input-rarity_id"> rarity </label>
+            <select name="input-rarity_id" id="input-rarity_id">
+                <option value="">Select a Rarity</option>
+                {{#each rarities}}
+                    <option value="{{this.rarity_id}}">{{this.rarity_name}}</option>
+                {{/each}}
+            </select>
             <label> name </label> <input type="text" name="name" value="Salmon">
             <label> color </label> <input type="text" name="color" value="Pink">
             <label> description </label> <input type="text" name="description" value="A medium-sized fish">
