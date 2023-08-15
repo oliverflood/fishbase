@@ -1,4 +1,11 @@
-// App.js
+/*
+CODE CITATION:
+Handlebars code and layout/views, CRUD operations within app.js, general structural HTML, server side Javascript, and database connection (db-connector.js) 
+adapted from the CS340 starter app code https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main 8/14/2023.
+
+In this file [app.js] in particular the post requests for CRUD operations are adapted from the particular modules on the CS340 starter app. 
+*/
+
 
 // Database
 var db = require('./database/db-connector')
@@ -14,13 +21,13 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 PORT        = 56711;                 // Set a port number at the top so it's easy to change in the future
 
-// app.js
+
+
 
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
-
 
 app.get('/', function(req, res)
 {
@@ -38,29 +45,26 @@ app.get('/index', function(req, res)
 
 // app.js - ROUTES section
 
-app.post('/add-fish-form', function(req, res) 
-{
-    // Capture the incoming data and parse it back to a JS object
+app.post('/add-fish-form', function(req, res) {
     let data = req.body;
-    console.log(data)
+    console.log(data);
 
-    // Create the query and run it on the database
-    query1 = `INSERT INTO Fishes (rarity_id ,name, color, description, favorite_movie) VALUES ('${data['input-rarity_id']}','${data['input-name']}', '${data['input-color']}', '${data['input-description']}', '${data['input-favorite_movie']}')`;
-    db.pool.query(query1, function(error, rows, fields){
+    // Check if no rarity is selected, and adjust the query accordingly
+    let rarityId = data['input-rarity_id'] ? `'${data['input-rarity_id']}'` : 'NULL';
 
-        // Check to see if there was an error
+    query1 = `INSERT INTO Fishes (rarity_id, name, color, description, favorite_movie) 
+              VALUES (${rarityId}, '${data['input-name']}', '${data['input-color']}', '${data['input-description']}', '${data['input-favorite_movie']}')`;
+
+    db.pool.query(query1, function(error, rows, fields) {
         if (error) {
-
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-            console.log(error)
+            console.log(error);
             res.sendStatus(400);
-        }
-        else
-        {
+        } else {
             res.redirect('/fishes');
         }
-    })
+    });
 });
+
 
 app.post('/delete-fish-form', function(req, res, next){
     let data = req.body;
@@ -96,12 +100,16 @@ app.post('/delete-fish-form', function(req, res, next){
         }
     })});
 
-app.post('/put-fish-form', function(req,res,next){
-
+app.post('/put-fish-form', function(req, res, next) {
     // Collect and unpack data, transfer to array
     let data = req.body;
     let { fish_id, rarity, name, color, description, favorite_movie } = data;
-    let values = [rarity, name, color, description, favorite_movie, fish_id]
+    let values = [rarity, name, color, description, favorite_movie, fish_id];
+
+    // Check if no rarity is selected, and adjust the query accordingly
+    if (!rarity) {
+        values[0] = null; // Set rarity to null
+    }
 
     let query = `UPDATE Fishes SET 
         rarity_id = ?,
@@ -109,29 +117,25 @@ app.post('/put-fish-form', function(req,res,next){
         color = ?,
         description = ?,
         favorite_movie = ? 
-        WHERE fish_id = ?`
+        WHERE fish_id = ?`;
 
-    let select = `SELECT * FROM Fishes WHERE fish_id = ?`
+    let select = `SELECT * FROM Fishes WHERE fish_id = ?`;
 
     // Run update query
     db.pool.query(query, values, (error, rows, fields) => {
         if (error) {
             console.log(error);
             res.status(500).send('Error updating fish');
-        }
-
-        else
-        {
+        } else {
             // Run the second query
             db.pool.query(select, fish_id, function(error, rows, fields) {
-
                 if (error) {
                     console.log(error);
                     res.status(400).send('Error retrieving fish');
                 } else {
-                    res.redirect('/fishes')
+                    res.redirect('/fishes');
                 }
-            })
+            });
         }
     });
 });

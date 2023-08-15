@@ -42,7 +42,7 @@
         <legend><strong>Add Fish</strong></legend>
         <fieldset class="fields">
             <label for="input-rarity_id"> rarity </label>
-            <select name="input-rarity_id" id="input-rarity_id" required>
+            <select name="input-rarity_id" id="input-rarity_id">
                 <option value="">Select a Rarity</option>
                 {{#each rarities}}
                     <option value="{{this.rarity_id}}">{{this.rarity_name}}</option>
@@ -56,7 +56,6 @@
             <label for="input-favorite_movie"> favorite_movie </label> <input type="text" name="input-favorite_movie"
                                                                               id="input-favorite_movie">
         </fieldset>
-        <input type="submit">
         <input class="btn" type="submit" id="addThing" value="Add Fish">
         <input class="btn" type="button" value="cancel" onClick="browseThing()">
     </form>
